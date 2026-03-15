@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 export type UXMode = "standard" | "cheer" | "spartan"
 
 export type ExpenseCategory =
@@ -40,4 +42,40 @@ export interface AppSettings {
   currentEmergencyFund: number
   savingsGoalAmount: number
   savingsGoalPeriod: SavingsGoalPeriod
+}
+
+export function useFinance() {
+  const [state, setState] = useState<FinanceState>({
+    incomes: [],
+    expenses: [],
+    uxMode: "standard",
+  })
+
+  const setIncomes = (incomes: IncomeItem[]) => {
+    setState((prev) => ({
+      ...prev,
+      incomes,
+    }))
+  }
+
+  const setExpenses = (expenses: ExpenseItem[]) => {
+    setState((prev) => ({
+      ...prev,
+      expenses,
+    }))
+  }
+
+  const setUXMode = (mode: UXMode) => {
+    setState((prev) => ({
+      ...prev,
+      uxMode: mode,
+    }))
+  }
+
+  return {
+    state,
+    setIncomes,
+    setExpenses,
+    setUXMode,
+  }
 }

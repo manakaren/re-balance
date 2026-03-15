@@ -1,52 +1,52 @@
-"use client"
+"use client";
 
-import {} from "@/hooks/useFinanceContext"
+import { useFinance } from "@/hooks/useFinance";
 
 function downloadJson(filename: string, data: unknown) {
   const blob = new Blob([JSON.stringify(data, null, 2)], {
     type: "application/json",
-  })
+  });
 
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement("a")
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
 
-  link.href = url
-  link.download = filename
-  link.click()
+  link.href = url;
+  link.download = filename;
+  link.click();
 
-  URL.revokeObjectURL(url)
+  URL.revokeObjectURL(url);
 }
 
 function buildExportFileName() {
-  const now = new Date()
-  const y = now.getFullYear()
-  const m = String(now.getMonth() + 1).padStart(2, "0")
-  const d = String(now.getDate()).padStart(2, "0")
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
 
-  return `rebalance-backup-${y}-${m}-${d}.json`
+  return `rebalance-backup-${y}-${m}-${d}.json`;
 }
 
 export function AppActions() {
-  const { state, resetAll } = useFinanceContext()
+  const { state, setIncomes, setExpenses } = useFinance();
 
   const handlePrint = () => {
-    window.print()
-  }
+    window.print();
+  };
 
   const handleExport = () => {
-    downloadJson(buildExportFileName(), state)
-  }
+    downloadJson(buildExportFileName(), state);
+  };
 
   const handleDeleteAll = () => {
     const ok = window.confirm(
       "家計データをすべて削除します。よろしいですか？"
-    )
+    );
+    if (!ok) return;
 
-    if (!ok) return
-
-    resetAll()
-    window.alert("家計データを削除しました。")
-  }
+    setIncomes([]);
+    setExpenses([]);
+    window.alert("家計データを削除しました。");
+  };
 
   return (
     <section className="card-base no-print p-4">
@@ -80,9 +80,6 @@ export function AppActions() {
         保存は JSON バックアップです。削除は localStorage の全家計データを消します。
       </p>
     </section>
-  )
+  );
 }
 
-function useFinanceContext(): { state: any; resetAll: any } {
-  throw new Error("Function not implemented.")
-}

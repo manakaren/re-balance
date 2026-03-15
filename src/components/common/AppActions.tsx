@@ -1,6 +1,5 @@
 "use client"
 
-import { useFinanceContext } from "@/hooks/useFinanceContext"
 
 function downloadJson(filename: string, data: unknown) {
   const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -27,11 +26,14 @@ function buildExportFileName() {
 }
 
 export function AppActions() {
-  const { state } = useFinanceContext()
+ 
 
   const handlePrint = () => {
     window.print()
   }
+
+  // TODO: Replace this mock state with your actual app state or import it from the relevant context/store
+  const state = {};
 
   const handleExport = () => {
     downloadJson(buildExportFileName(), state)

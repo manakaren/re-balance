@@ -1,6 +1,5 @@
 "use client"
 
-import useFinanceContext from "@/hooks/useFinanceContext"
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("ja-JP", {
@@ -96,4 +95,8 @@ export function MonthlyTrendChart() {
       )}
     </section>
   )
+}
+
+function useFinanceContext(): { state: any } {
+  throw new Error("Function not implemented.")
 }
